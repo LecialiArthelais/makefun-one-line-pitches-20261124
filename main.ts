@@ -41,14 +41,22 @@ function countCodePoints(text: string): number {
   return [...text].length;
 }
 
-// The entry must be a single non-blank sentence of 1–240 code points.
+// The entry must be a single non-blank sentence of 1–240 code points:
+// one sentence means no "?" or "!" anywhere, no ". " (a period followed
+// by a space would end a sentence early — the only period the pitch
+// carries besides its final one is the dot inside "make.fun"), and the
+// text ends with its single terminal period.
 function isValidPitch(text: string): boolean {
   const length = countCodePoints(text);
   return (
     text.trim().length > 0 &&
     length >= 1 &&
     length <= 240 &&
-    !text.includes("\n")
+    !text.includes("\n") &&
+    !text.includes("?") &&
+    !text.includes("!") &&
+    !text.includes(". ") &&
+    text.endsWith(".")
   );
 }
 
